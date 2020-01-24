@@ -1,36 +1,43 @@
-//basic representation of the class that will be used in the example
-class Person{
-    constructor(){
-        this.Name = null;
-        this.DOB = null;
-        this.Height = null;
-        this.Gender = null;
-    }
-}
-
 class PersonCS{
     constructor(initializer = {}){
-        this.Name = null;
+        this.FirstName = null;
+        this.LastName = null;
         this.DOB = null;
         this.Height = null;
-        this.Gender = null;
-        this.SSN = null;
+        this.GetFullName = function (){
+            return `${this.FirstName} ${this.LastName}`
+        }
         Object.assign(this, initializer);
     }
 }
-
 let person = new PersonCS({
-    Name: "John Doe",
-    DOB: new Date("01/23/2019"),
-    Height: 5.5,
-    Gender: "M"
+    FirstName: "John",
+    LastName: "Doe",
+    DOB: new Date("01/23/2019")
 })
 console.log(person);
 
+function Teacher(){
+    Object.assign(this, new PersonCS());
+    this.TeacherID = 0;
+    this.PrimarySubject = "English"
+}
+console.log(new Teacher());
+
+function Student(){
+    Object.assign(this, new PersonCS());
+    this.StudentID = 0;
+}
+console.log(new Student());
 
 
-//simulation of an API response
-var API = {
-    response = () => { return }
+var API  = {
+    Response: () => {return JSON.parse('[{"FirstName":"John","LastName":"Doe","DOB":"2019-01-23T08:00:00.000Z","Height":5.5},{"FirstName":"Mary","LastName":"Jane","DOB":"1982-05-30T07:00:00.000Z","Height":5.7}]')}
 }
 
+var response = API.Response();
+
+var models = response.map(element => {
+    return Object.assign(new PersonCS(), element);
+});
+console.log(models[0].GetFullName());
